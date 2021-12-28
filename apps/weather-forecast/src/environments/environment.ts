@@ -6,6 +6,8 @@
 
 export const environment = {
 	production: false,
+	openWeatherUrl: 'https://api.openweathermap.org',
+	openWeatherBaseUrlHttp: 'http://api.openweathermap.org'
 };
 
 /*
