@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/internal/Observable';
-import { catchError } from 'rxjs/internal/operators/catchError';
 import { HttpClient } from '@angular/common/http';
 import { distinctUntilChanged } from 'rxjs/internal/operators/distinctUntilChanged';
 import { map } from 'rxjs/internal/operators/map';
@@ -18,10 +17,10 @@ export class WeatherForecastApiService {
 	// TODO: #1
 	// openWeatherUrl: string = environment.openWeatherUrl;
 	private openWeatherBaseUrl = 'https://api.openweathermap.org';
-	// private openWeatherBaseUrlHttp = 'http://api.openweathermap.org';
 	private _apiKey = '010721642521f31b0fbc8c3831d45951';
 	// END: #1
 
+	// TODO: Separate this in a different services one for City one for Weather data
 	private openWeatherGeoUrl = `${this.openWeatherBaseUrl}/geo/1.0/direct`;
 	private openWeatherDataUrl = `${this.openWeatherBaseUrl}/data/2.5/onecall`;
 
@@ -30,12 +29,7 @@ export class WeatherForecastApiService {
 	newCitySearch(cityName: string): Observable<CityDataModel[] | any> {
 		return this.httpClient
 			.get<CityDataModel[]>(`${this.openWeatherGeoUrl}?q=${cityName}&limit=${cityLimit}&appid=${this._apiKey}`)
-			.pipe(
-				distinctUntilChanged(),
-				catchError((err: any) => {
-					return err;
-				})
-			);
+			.pipe(distinctUntilChanged());
 	}
 
 	getWeatherData(lat: number, lon: number, mode: string): Observable<RecordDataModel[] | any> {
@@ -48,13 +42,7 @@ export class WeatherForecastApiService {
 				map(responseData => {
 					// return responseData[mode]; // Dynamic approach
 					return mode === 'hourly' ? responseData.hourly : responseData.daily;
-				}),
-				catchError(this.handleServiceError)
+				})
 			);
-	}
-
-	handleServiceError(err: any): any {
-		console.log('Error:', err);
-		return err;
 	}
 }

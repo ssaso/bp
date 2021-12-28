@@ -43,7 +43,6 @@ export class WeatherMainComponent implements OnInit {
 		this.route.queryParamMap
 			.pipe(
 				switchMap(params => {
-					console.log('here');
 					let modeFromUrl = params.get('mode')?.toLowerCase();
 					if (modeFromUrl != null && this.modeOptions.indexOf(modeFromUrl) != -1) {
 						this.mode = modeFromUrl;
@@ -53,7 +52,6 @@ export class WeatherMainComponent implements OnInit {
 				})
 			)
 			.subscribe(res => {
-				console.log('there');
 				if (res != null) {
 					this.getWeatherData(res);
 				}
@@ -67,7 +65,6 @@ export class WeatherMainComponent implements OnInit {
 				distinctUntilChanged()
 			)
 			.subscribe(searchVal => {
-				console.log('searchVal: ', searchVal);
 				this.luckySearch = false;
 				this.getWeatherData(searchVal);
 			});
@@ -117,7 +114,6 @@ export class WeatherMainComponent implements OnInit {
 				weatherService.subscribe({
 					next: (res: any) => {
 						this.tableRows.length = 0;
-						console.log('hourly: ', res);
 						res.forEach((rec: any) => {
 							rec.dt = this.datePipe.transform(rec.dt, 'hh:mm');
 							if (rec.dt != this.tableRows[this.tableRows.length - 1]?.dt) {
@@ -125,7 +121,7 @@ export class WeatherMainComponent implements OnInit {
 							}
 						});
 					},
-					error: () => {},
+					error: this.handleError.bind(this),
 				});
 			} else if (this.mode === 'daily') {
 				weatherService;
@@ -141,7 +137,7 @@ export class WeatherMainComponent implements OnInit {
 						});
 						this.tableRows = res;
 					},
-					error: () => {},
+					error: this.handleError.bind(this),
 				});
 			}
 			this.updateQuery(cityName, this.mode);
@@ -159,5 +155,10 @@ export class WeatherMainComponent implements OnInit {
 
 	updateName(cityName: string): void {
 		this.headers[0] = cityName;
+	}
+
+	handleError(err: any): any {
+		console.log('error: ', err?.error?.message);
+		alert(err?.error?.message);
 	}
 }
