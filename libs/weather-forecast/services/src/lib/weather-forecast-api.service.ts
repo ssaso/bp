@@ -17,13 +17,13 @@ const excludeAll = 'current,minutely,hourly,daily,alerts';
 export class WeatherForecastApiService {
 	// TODO: #1
 	// openWeatherUrl: string = environment.openWeatherUrl;
-	// private openWeatherBaseUrl = 'https://api.openweathermap.org';
-	private openWeatherBaseUrlHttp = 'http://api.openweathermap.org';
+	private openWeatherBaseUrl = 'https://api.openweathermap.org';
+	// private openWeatherBaseUrlHttp = 'http://api.openweathermap.org';
 	private _apiKey = '010721642521f31b0fbc8c3831d45951';
 	// END: #1
 
-	private openWeatherGeoUrl = `${this.openWeatherBaseUrlHttp}/geo/1.0/direct`;
-	private openWeatherDataUrl = `${this.openWeatherBaseUrlHttp}/data/2.5/onecall`;
+	private openWeatherGeoUrl = `${this.openWeatherBaseUrl}/geo/1.0/direct`;
+	private openWeatherDataUrl = `${this.openWeatherBaseUrl}/data/2.5/onecall`;
 
 	constructor(private httpClient: HttpClient) {}
 
