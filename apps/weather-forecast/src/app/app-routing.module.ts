@@ -7,20 +7,16 @@ const routes: Routes = [
 		path: '',
 		redirectTo: '/weather',
 		pathMatch: 'full',
-		data: { city: 'Rome' },
+		data: {},
+		// Usually practice
+		// loadChildren: () => import('../weather-module-folder/weather.module').then(m => m.WeatherModule),
 	},
 	{
 		path: 'weather',
 		component: WeatherMainComponent,
 		// canActivate: [AuthGuard]
 	},
-
-	// {
-	// 	path: '/weather',
-	// 	component: Weather,
-	// 	children: AuthGuardRoutes,
-	// 	canActivate: [AuthGuard],
-	// }
+	{ path: '**', redirectTo: 'weather' },
 ];
 
 @NgModule({
